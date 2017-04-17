@@ -8,6 +8,7 @@ import { ReduxAsyncConnect } from 'redux-connect';
 import createStore from './create-store';
 import { AppContainer as HotReloader } from 'react-hot-loader';
 import AuthFetch from './auth-fetch';
+import { createWrappedComponent } from './wrapped-component';
 
 const history = createBrowserHistory();
 
@@ -18,20 +19,9 @@ const store = createStore(history, window.__INITIAL_STATE__);
 const authFetch = new AuthFetch(store.dispatch);
 const helpers = { authFetch };
 
-class Wrapped extends PureComponent {
-  static childContextTypes = { authFetch: React.PropTypes.object };
-
-  getChildContext() {
-    return { authFetch };
-  }
-
-  render() {
-    return this.props.children;
-  }
-}
-
 let counter = 0;
 const renderRoot = () => {
+  const Wrapped = createWrappedComponent(authFetch);
   counter += 1;
   const getRoutes = require('routes').default;
   render(
