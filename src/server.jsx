@@ -14,6 +14,7 @@ import createStore from './create-store';
 import cookieParser from 'cookie-parser';
 import AuthFetch from './auth-fetch';
 import Url from 'url';
+import { createWrappedComponent } from './wrapped-component';
 
 global.__CLIENT__ = false;
 global.__SERVER__ = true;
@@ -96,10 +97,13 @@ export default (app, options) => {
       }
 
       const helpers = { authFetch };
+      const Wrapped = createWrappedComponent(authFetch);
       loadOnServer({ ...renderProps, store, helpers }).then(() => {
         const component = (
           <Provider store={store} key="provider">
-            <ReduxAsyncConnect {...renderProps} />
+            <Wrapped>
+              <ReduxAsyncConnect {...renderProps} />
+            </Wrapped>
           </Provider>
         );
 

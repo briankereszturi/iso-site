@@ -31,10 +31,12 @@ export default class AuthFetch {
     return fetch(`${this.apiPrefix}${endpoint}`, options)
       .then(response => {
         const headers = response.headers._headers;
-        const setCookieHeader = headers && headers['set-cookie'];
-        if (setCookieHeader) {
-          const [key, value] = setCookieHeader.split('=');
-          key && value && this.setCookie(key, value);
+        const setCookieHeaders = headers && headers['set-cookie'];
+        if (setCookieHeaders) {
+          setCookieHeaders.forEach(h => {
+            const [key, value] = h.split('=');
+            this.setCookie(key, value);
+          });
         }
 
         if (response.status === 401) {
