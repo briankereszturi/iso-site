@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import { render } from 'react-dom';
 import { Router } from 'react-router';
 import { createHistory as createBrowserHistory } from 'history';
