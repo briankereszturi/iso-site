@@ -28,7 +28,7 @@ module.exports = {
         },
 
         style_modules: {
-            extensions: [ 'less' ],
+            extensions: [ 'less', 'css' ],
             filter: function(module, regex, options, log) {
                 if (options.development) {
                     return WebpackIsomorphicToolsPlugin.style_loader_filter(module, regex, options, log);
