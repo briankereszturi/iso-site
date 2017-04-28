@@ -73,6 +73,13 @@ export default class AuthFetch {
     });
   }
 
+  postRaw(endpoint, body) {
+    return this.request(endpoint, {
+      method: 'POST',
+      body
+    });
+  }
+
   put(endpoint, json) {
     return this.request(endpoint, {
       method: 'PUT',
@@ -80,6 +87,13 @@ export default class AuthFetch {
         'Content-Type': 'application/json'
       },
       body: json && JSON.stringify(json)
+    });
+  }
+
+  putRaw(endpoint, body) {
+    return this.request(endpoint, {
+      method: 'PUT',
+      body
     });
   }
 }
