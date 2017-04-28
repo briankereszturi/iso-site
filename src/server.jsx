@@ -50,7 +50,7 @@ export default (app, options) => {
     const authFetch = new AuthFetch(store.dispatch);
     authFetch.setApiPrefix(__DEVELOPMENT__
       ? 'http://localhost/api'
-      : `${API_HOST}/api`);
+      : API_HOST);
 
     options.forwardCookies.forEach(c => {
       const cookie = req.cookies[c];
