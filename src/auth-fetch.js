@@ -63,6 +63,16 @@ export default class AuthFetch {
     return this.request(endpoint);
   }
 
+  patch(endpoint, json) {
+    return this.request(endpoint, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: json && JSON.stringify(json)
+    });
+  }
+
   post(endpoint, json) {
     return this.request(endpoint, {
       method: 'POST',
