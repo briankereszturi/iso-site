@@ -3,7 +3,6 @@
 
 const spawnSync = require('child_process').spawnSync;
 const path = require('path');
-const fs = require('fs');
 
 const command = process.argv[2];
 
@@ -11,25 +10,6 @@ const dir = './node_modules/iso-site';
 const nodePath = `${process.env.NODE_PATH || ''}:./src:./node_modules:${dir}/node_modules`;
 
 const cfg = require(path.join(process.cwd(), 'package.json')).isoSite || {};
-
-const addDockerfile = () => {
-  spawnSync('cp', [
-    path.resolve(__dirname, 'Dockerfile'),
-    path.resolve(process.cwd(), 'Dockerfile')
-  ]);
-}
-
-const removeDockerfile = (dest) => {
-  spawnSync('rm', [ path.resolve(process.cwd(), 'Dockerfile') ]);
-}
-
-const cleanup = () => {
-  removeDockerFile();
-  process.exit(1);
-}
-
-process.on('SIGTERM', cleanup);
-process.on('SIGINT', cleanup);
 
 switch (command) {
   case "build": {
@@ -60,22 +40,6 @@ switch (command) {
         NODE_PATH: nodePath
       })
     });
-    break;
-  }
-  case "docker-build": {
-    if (!cfg.dockerTag) {
-      console.log('Error: dockerTag must be specified in isoSite config.');
-      process.exit(1);
-    }
-
-    try {
-      addDockerfile();
-
-      const args = [ 'build', '-t', cfg.dockerTag, '.' ];
-      spawnSync('docker', args, { stdio: 'inherit' });
-    } finally {
-      removeDockerfile()
-    }
     break;
   }
   default:
