@@ -34,7 +34,7 @@ const Html = (props) => {
       </head>
       <body>
         <div id="content" dangerouslySetInnerHTML={{ __html: content }} />
-        <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__=${JSON.stringify(store.getState())};` }} charSet="UTF-8" />
+        <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__=${JSON.stringify(store && store.getState() || {})};` }} charSet="UTF-8" />
         <script src={assets.javascript.main} charSet="UTF-8" />
       </body>
     </html>

@@ -42,21 +42,6 @@ export default (app, options) => {
       clearRequireCache();
     }
 
-    const getRoutes = require('routes').default;
-
-    const history = createMemoryHistory(req.originalUrl);
-    const store = createStore(history);
-
-    const authFetch = new AuthFetch(store.dispatch);
-    authFetch.setApiPrefix(__DEVELOPMENT__
-      ? 'http://localhost/api'
-      : API_HOST);
-
-    options.forwardCookies.forEach(c => {
-      const cookie = req.cookies[c];
-      cookie && authFetch.setCookie(c, cookie);
-    });
-
     const renderAndSend = (component, cookies) => {
       if (cookies) {
         res.set('set-cookie', cookies[0]);
@@ -71,6 +56,21 @@ export default (app, options) => {
     if (__DISABLE_SSR__) {
       return renderAndSend();
     }
+
+    const getRoutes = require('routes').default;
+
+    const history = createMemoryHistory(req.originalUrl);
+    const store = createStore(history);
+
+    const authFetch = new AuthFetch(store.dispatch);
+    authFetch.setApiPrefix(__DEVELOPMENT__
+      ? 'http://localhost/api'
+      : API_HOST);
+
+    options.forwardCookies.forEach(c => {
+      const cookie = req.cookies[c];
+      cookie && authFetch.setCookie(c, cookie);
+    });
 
     const state = req.method !== 'GET'
       ? {method: req.method, body: req.body}
