@@ -1,6 +1,6 @@
 {
   "name": "iso-site",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "author": "Brian Kereszturi",
   "repository": "https://github.com/briankereszturi/iso-site",
   "main": "src/index.js",
