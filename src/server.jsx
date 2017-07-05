@@ -46,6 +46,7 @@ export default (app, options) => {
       if (cookies) {
         res.set('set-cookie', cookies[0]);
       }
+      res.header('Content-Type', 'text/html; charset=utf-8');
       res.end(createHtml({
         assets: webpackIsomorphicTools.assets(),
         store,
