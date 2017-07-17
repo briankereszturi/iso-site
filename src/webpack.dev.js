@@ -3,7 +3,8 @@ import webpack from 'webpack';
 import assign from 'object-assign';
 import path from 'path';
 import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware'; import prodCfg from './webpack.prod.config.js';
+import webpackHotMiddleware from 'webpack-hot-middleware';
+import prodCfgBuilder from './webpack.prod.config.js';
 import WebpackIsoToolsConfig from './webpack-isomorphic-tools-config';
 import WebpackIsomorphicToolsPlugin from 'webpack-isomorphic-tools/plugin';
 import babelQuery from './babel-query';
@@ -11,8 +12,18 @@ import babelQuery from './babel-query';
 const webpackIsoToolsPlugin = new WebpackIsomorphicToolsPlugin(WebpackIsoToolsConfig).development()
 
 Object.assign = assign;
-export default function(app) {
-  const config = Object.assign(prodCfg, {
+export default function(app, pkgConfig) {
+  pkgConfig = pkgConfig || {};
+
+  const referenceLibs = (pkgConfig.dllReferenceLibs || [])
+    .filter(l => !!l.js)
+    .map(l =>
+      new webpack.DllReferencePlugin({
+        context: '.',
+        manifest: require(path.join(process.cwd(), 'manifests', `${l.name}-manifest.json`))
+      }));
+
+  const config = Object.assign(prodCfgBuilder(pkgConfig), {
     devtool: 'eval',
     entry: [
       'react-hot-loader/patch',
@@ -52,6 +63,8 @@ export default function(app) {
       ]
     },
     plugins: [
+      new ExtractTextPlugin('styles.css'),
+      ...referenceLibs,
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
       new webpack.DefinePlugin({
@@ -60,7 +73,6 @@ export default function(app) {
         __DEVELOPMENT__: true,
         __DEVTOOLS__: true
       }),
-      new ExtractTextPlugin('styles.css'),
       webpackIsoToolsPlugin
     ],
   });

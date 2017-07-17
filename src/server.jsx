@@ -51,7 +51,7 @@ export default (app, options) => {
         assets: webpackIsomorphicTools.assets(),
         store,
         component,
-      }));
+      }, options));
     };
 
     if (__DISABLE_SSR__) {

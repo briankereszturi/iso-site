@@ -21,17 +21,16 @@ const WebpackIsomorphicTools = require('webpack-isomorphic-tools');
 
 const app = express();
 
+const pkgConfig = require(path.join(process.cwd(), 'package.json'));
 if (process.env.NODE_ENV !== 'production') {
-  require('./webpack.dev').default(app);
+  require('./webpack.dev').default(app, pkgConfig.isoSite);
 }
 
 global.webpackIsomorphicTools = new WebpackIsomorphicTools(WebpackIsoToolsConfig)
   .server(process.cwd(), () => {
     const PORT = process.env.PORT || 3000;
 
-    const pkg = require(path.join(process.cwd(), 'package.json'));
-
-    require('./server').default(app, pkg.isoSite)
+    require('./server').default(app, pkgConfig.isoSite)
       .listen(PORT, function () {
         console.log('Server listening on: ' + PORT);
       });
