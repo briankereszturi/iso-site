@@ -8,6 +8,7 @@ import Helmet from 'react-helmet';
 const genRoot = (pkgConfig) => {
   pkgConfig = pkgConfig || {};
   pkgConfig.dllReferenceLibs = pkgConfig.dllReferenceLibs || [];
+  pkgConfig.prefix = pkgConfig.prefix || '';
 
   const dllCssLinks = pkgConfig.dllReferenceLibs
     .filter(l => !!l.css)
@@ -43,7 +44,7 @@ const genRoot = (pkgConfig) => {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           {Object.keys(assets.styles).map((style, key) => (
             <link
-              href={assets.styles[style].substr(1)}
+              href={pkgConfig.prefix + assets.styles[style]}
               key={key}
               media="screen, projection"
               rel="stylesheet"
@@ -57,7 +58,7 @@ const genRoot = (pkgConfig) => {
           <div id="content" dangerouslySetInnerHTML={{ __html: content }} />
           <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__=${JSON.stringify(store && store.getState() || {})};` }} charSet="UTF-8" />
           {dllJsIncludes}
-          <script src={assets.javascript.main.substr(1)} charSet="UTF-8" />
+          <script src={pkgConfig.prefix + assets.javascript.main} charSet="UTF-8" />
         </body>
       </html>
     );
