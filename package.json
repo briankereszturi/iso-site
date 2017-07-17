@@ -38,6 +38,7 @@
     "less-loader": "2.2.0",
     "less-mixins": "^1.0.0",
     "lodash": "^4.17.4",
+    "ncp": "^2.0.0",
     "normalizr": "^3.1.0",
     "object-assign": "^4.0.1",
     "prop-types": "^15.5.8",
