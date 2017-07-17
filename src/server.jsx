@@ -116,7 +116,7 @@ export default (app, options) => {
     });
   });
 
-  app.use(options.prefix);
+  app.use(options.prefix, router);
 
   return app;
 };
