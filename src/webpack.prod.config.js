@@ -9,6 +9,7 @@ const webpackIsoToolsPlugin = new WebpackIsomorphicToolsPlugin(WebpackIsoToolsCo
 
 function buildConfig(pkgConfig) {
   pkgConfig = pkgConfig || {};
+  pkgConfig.publicPath = pkgConfig.publicPath || '/';
 
   const referenceLibs = (pkgConfig.dllReferenceLibs || [])
     .filter(l => !!l.js)
@@ -62,7 +63,7 @@ function buildConfig(pkgConfig) {
     output: {
       path: path.join(process.cwd(), 'dist'),
       filename: 'main.[hash].js',
-      publicPath: '/'
+      publicPath: pkgConfig.publicPath
     },
     module: {
       rules: [
