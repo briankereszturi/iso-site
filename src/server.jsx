@@ -1,7 +1,7 @@
 /* global __DEVELOPMENT__, __DISABLE_SSR__, webpackIsomorphicTools */
 /* eslint no-underscore-dangle: 0 */
 /* eslint consistent-return: 0 */
-import express, { Router } from 'express';
+import express from 'express';
 import React from 'react';
 import bodyParser from 'body-parser';
 import { match } from 'react-router';
@@ -30,16 +30,13 @@ const clearRequireCache = () => {
 export default (app, options) => {
   options = options || {};
   options.forwardCookies = options.forwardCookies || [];
-  options.prefix = options.prefix || '/';
 
   app.use(express.static(path.join(process.cwd(), 'dist')));
   app.use(bodyParser.urlencoded({extended: false}))
   app.use(bodyParser.json())
   app.use(cookieParser());
 
-  const router = Router();
-
-  router.use((req, res) => {
+  app.use((req, res) => {
     if (__DEVELOPMENT__) {
       webpackIsomorphicTools.refresh();
       clearRequireCache();
@@ -115,8 +112,6 @@ export default (app, options) => {
       });
     });
   });
-
-  app.use(options.prefix, router);
 
   return app;
 };
