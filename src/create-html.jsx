@@ -13,6 +13,7 @@ const genRoot = (pkgConfig) => {
     .filter(l => !!l.css)
     .map(l => (
       <link
+        key={l.path}
         href={`${l.path}.css`}
         rel="stylesheet"
         type="text/css"
@@ -22,7 +23,7 @@ const genRoot = (pkgConfig) => {
 
   const dllJsIncludes = pkgConfig.dllReferenceLibs
     .filter(l => !!l.js)
-    .map(l => <script src={`${l.path}.js`} charSet="UTF-8" />);
+    .map(l => <script key={l.path} src={`${l.path}.js`} charSet="UTF-8" />);
 
   return (props) => {
     const { assets, component, store } = props;

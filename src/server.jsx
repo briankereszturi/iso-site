@@ -36,6 +36,10 @@ export default (app, options) => {
   app.use(bodyParser.json())
   app.use(cookieParser());
 
+  app.get('/ping', (req, res) => {
+    res.status(200).end();
+  });
+
   app.use((req, res) => {
     if (__DEVELOPMENT__) {
       webpackIsomorphicTools.refresh();

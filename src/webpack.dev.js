@@ -27,7 +27,7 @@ export default function(app, pkgConfig) {
     devtool: 'eval',
     entry: [
       'react-hot-loader/patch',
-      'webpack-hot-middleware/client?dynamicPublicPath=true',
+      'webpack-hot-middleware/client',
       'webpack/hot/only-dev-server',
       'react-hot-loader',
       'babel-regenerator-runtime',
@@ -82,7 +82,5 @@ export default function(app, pkgConfig) {
   app.use(webpackDevMiddleware(compiler, {
     noInfo: true
   }));
-  app.use(webpackHotMiddleware(compiler, {
-    publicPath: config.output.publicPath
-  }));
+  app.use(webpackHotMiddleware(compiler));
 }
