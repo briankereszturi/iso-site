@@ -14,6 +14,7 @@ const webpackIsoToolsPlugin = new WebpackIsomorphicToolsPlugin(WebpackIsoToolsCo
 Object.assign = assign;
 export default function(app, pkgConfig) {
   pkgConfig = pkgConfig || {};
+  pkgConfig.publicPath = pkgConfig.publicPath || '/';
 
   const referenceLibs = (pkgConfig.dllReferenceLibs || [])
     .filter(l => !!l.js)
@@ -27,7 +28,7 @@ export default function(app, pkgConfig) {
     devtool: 'eval',
     entry: [
       'react-hot-loader/patch',
-      'webpack-hot-middleware/client',
+      `webpack-hot-middleware/client?path=${pkgConfig.publicPath}__webpack_hmr`,
       'webpack/hot/only-dev-server',
       'react-hot-loader',
       'babel-regenerator-runtime',
